@@ -47,4 +47,12 @@ public class MemberService {
         return memberRepository.findOne(memberId);
     }
 
+    /**
+     * 변경 감지를 이용한 이름 업데이트
+     */
+    @Transactional
+    public void update(Long id, String name) {
+        Member member = memberRepository.findOne(id);
+        member.setName(name);
+    }
 }
