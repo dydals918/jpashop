@@ -3,6 +3,9 @@ package jpabook.jpashop.api;
 import jpabook.jpashop.domain.*;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
+import jpabook.jpashop.repository.order.query.OrderFlatDto;
+import jpabook.jpashop.repository.order.query.OrderQueryDto;
+import jpabook.jpashop.repository.order.query.OrderQueryRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
 public class OrderApiController {
 
     private final OrderRepository orderRepository;
+    private final OrderQueryRepository orderQueryRepository;
 
     @GetMapping("/api/v1/orders")
     public List<Order> ordersV1() {
@@ -64,6 +68,25 @@ public class OrderApiController {
 
         return new Result(result, result.size());
     }
+
+    @GetMapping("/api/v4/orders")
+    public Result ordersV4() {
+        List<OrderQueryDto> result = orderQueryRepository.findOrderQueryDtos();
+        return new Result(result, result.size());
+    }
+
+    @GetMapping("/api/v5/orders")
+    public Result ordersV5() {
+        List<OrderQueryDto> result = orderQueryRepository.findAllByDto_optimization();
+        return new Result(result, result.size());
+    }
+
+    @GetMapping("/api/v6/orders")
+    public Result ordersV6() {
+        List<OrderFlatDto> result = orderQueryRepository.findAllByDto_flat();
+        return new Result(result, result.size());
+    }
+
 
     @Data
     @AllArgsConstructor
